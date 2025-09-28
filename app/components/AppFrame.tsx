@@ -3,6 +3,7 @@
 import { ConnectWallet, Wallet } from '@coinbase/onchainkit/wallet';
 import { Name, Avatar } from '@coinbase/onchainkit/identity';
 import { useTheme } from './ThemeProvider';
+import { TokenBalance } from './TokenBalance';
 import { Palette, Trophy, Vote } from 'lucide-react';
 
 interface AppFrameProps {
@@ -29,6 +30,8 @@ export function AppFrame({ children }: AppFrameProps) {
             </div>
             
             <div className="flex items-center space-x-4">
+              <TokenBalance className="hidden md:block" />
+
               <button
                 onClick={() => setTheme(theme === 'default' ? 'celo' : 'default')}
                 className="p-2 rounded-lg bg-surface hover:bg-opacity-80 transition-colors"
@@ -36,7 +39,7 @@ export function AppFrame({ children }: AppFrameProps) {
               >
                 <Palette className="w-5 h-5 text-muted" />
               </button>
-              
+
               <Wallet>
                 <ConnectWallet>
                   <div className="flex items-center space-x-2 bg-surface px-4 py-2 rounded-lg">
