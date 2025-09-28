@@ -14,7 +14,7 @@ export interface Draw {
   entryFee: string;
   entryDeadline: number;
   drawTimestamp: number;
-  status: 'upcoming' | 'active' | 'completed';
+  status: 'upcoming' | 'active' | 'completed' | 'cancelled';
   winnerId?: string;
   participantCount: number;
 }

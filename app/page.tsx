@@ -8,7 +8,8 @@ import { StatsCard } from './components/StatsCard';
 import { TransactionButton } from './components/TransactionButton';
 import { Modal } from './components/Modal';
 import { Trophy, Users, Vote, TrendingUp, Coins, Activity } from 'lucide-react';
-import { MOCK_DRAWS, MOCK_INITIATIVES } from '@/lib/constants';
+import { useDraws } from '@/lib/hooks/useDraws';
+import { useVoting } from '@/lib/hooks/useVoting';
 import { Draw, Initiative } from '@/lib/types';
 
 export default function HomePage() {
@@ -17,8 +18,24 @@ export default function HomePage() {
   const [showDrawModal, setShowDrawModal] = useState(false);
   const [showVoteModal, setShowVoteModal] = useState(false);
 
+  // Use the new hooks
+  const {
+    activeDraws,
+    upcomingDraws,
+    enterDraw,
+    isEnteringDraw,
+    enterDrawError,
+  } = useDraws();
+
+  const {
+    activeInitiatives,
+    castVote,
+    isCastingVote,
+    castVoteError,
+  } = useVoting();
+
   const handleEnterDraw = (drawId: string) => {
-    const draw = MOCK_DRAWS.find(d => d.drawId === drawId);
+    const draw = [...activeDraws, ...upcomingDraws].find(d => d.drawId.toString() === drawId);
     if (draw) {
       setSelectedDraw(draw);
       setShowDrawModal(true);
@@ -26,7 +43,7 @@ export default function HomePage() {
   };
 
   const handleVote = (initiativeId: string, optionId: string) => {
-    const initiative = MOCK_INITIATIVES.find(i => i.initiativeId === initiativeId);
+    const initiative = activeInitiatives.find(i => i.initiativeId.toString() === initiativeId);
     if (initiative) {
       setSelectedInitiative(initiative);
       setShowVoteModal(true);
@@ -34,17 +51,34 @@ export default function HomePage() {
   };
 
   const confirmDrawEntry = async () => {
-    // Simulate transaction
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setShowDrawModal(false);
-    setSelectedDraw(null);
+    if (!selectedDraw) return;
+
+    try {
+      await enterDraw({
+        drawId: parseInt(selectedDraw.drawId),
+        entryFee: selectedDraw.entryFee,
+      });
+      setShowDrawModal(false);
+      setSelectedDraw(null);
+    } catch (error) {
+      console.error('Failed to enter draw:', error);
+    }
   };
 
   const confirmVote = async () => {
-    // Simulate transaction
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setShowVoteModal(false);
-    setSelectedInitiative(null);
+    if (!selectedInitiative) return;
+
+    try {
+      // For now, vote for option 1
+      await castVote({
+        initiativeId: parseInt(selectedInitiative.initiativeId),
+        optionId: 1,
+      });
+      setShowVoteModal(false);
+      setSelectedInitiative(null);
+    } catch (error) {
+      console.error('Failed to cast vote:', error);
+    }
   };
 
   return (
@@ -101,7 +135,7 @@ export default function HomePage() {
           </div>
           
           <div className="space-y-6">
-            {MOCK_DRAWS.filter(draw => draw.status === 'active').map((draw) => (
+            {activeDraws.map((draw) => (
               <DrawCard
                 key={draw.drawId}
                 draw={draw}
@@ -115,7 +149,7 @@ export default function HomePage() {
           <div className="mt-12">
             <h3 className="text-xl font-semibold text-fg mb-6">Upcoming Draws</h3>
             <div className="space-y-4">
-              {MOCK_DRAWS.filter(draw => draw.status === 'upcoming').map((draw) => (
+              {upcomingDraws.map((draw) => (
                 <DrawCard
                   key={draw.drawId}
                   draw={draw}
@@ -132,7 +166,7 @@ export default function HomePage() {
           <div>
             <h3 className="text-xl font-semibold text-fg mb-6">Community Voting</h3>
             <div className="space-y-6">
-              {MOCK_INITIATIVES.map((initiative) => (
+              {activeInitiatives.map((initiative) => (
                 <VotingPoll
                   key={initiative.initiativeId}
                   initiative={initiative}
@@ -204,8 +238,9 @@ export default function HomePage() {
                 variant="enterDraw"
                 onClick={confirmDrawEntry}
                 className="flex-1"
+                disabled={isEnteringDraw}
               >
-                Confirm Entry
+                {isEnteringDraw ? 'Entering...' : 'Confirm Entry'}
               </TransactionButton>
             </div>
           </div>
@@ -242,8 +277,9 @@ export default function HomePage() {
                 variant="vote"
                 onClick={confirmVote}
                 className="flex-1"
+                disabled={isCastingVote}
               >
-                Cast Vote
+                {isCastingVote ? 'Voting...' : 'Cast Vote'}
               </TransactionButton>
             </div>
           </div>
