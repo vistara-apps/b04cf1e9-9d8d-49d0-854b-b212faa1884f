@@ -1,0 +1,30 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "frame": {
+    "version": "1",
+    "name": "VeriDraw",
+    "subtitle": "Built with Zara",
+    "description": "VeriDraw is a Base Mini App built with Zara.",
+    "iconUrl": "https://0co.to/images/zara-2.png",
+    "homeUrl": "https://b04cf1e99d8d49d0854bb212faa1884f-6lvs.vercel.app",
+    "splashImageUrl": "https://b04cf1e99d8d49d0854bb212faa1884f-6lvs.vercel.app/splash.png",
+    "splashBackgroundColor": "#000000",
+    "heroImageUrl": "https://b04cf1e99d8d49d0854bb212faa1884f-6lvs.vercel.app/image.png",
+    "tagline": "VeriDraw",
+    "screenshotUrls": [
+      "https://b04cf1e99d8d49d0854bb212faa1884f-6lvs.vercel.app/screenshot.png",
+      "https://b04cf1e99d8d49d0854bb212faa1884f-6lvs.vercel.app/screenshot.png"
+    ],
+    "primaryCategory": "social",
+    "tags": [
+      "base",
+      "miniapp",
+      "onchainkit"
+    ],
+    "webhookUrl": "https://b04cf1e99d8d49d0854bb212faa1884f-6lvs.vercel.app/api/webhook"
+  }
+}
