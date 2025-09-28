@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Warm Social Theme - Dark teal background with coral accents */
+  --color-bg: #1a2e2e;
+  --color-fg: #f0f4f4;
+  --color-accent: #ff6b6b;
+  --color-surface: #2a3f3f;
+  --color-border: #3a4f4f;
+  --color-muted: #8a9a9a;
+}
+
+[data-theme="celo"] {
+  --color-bg: #000000;
+  --color-fg: #ffffff;
+  --color-accent: #fbcc5c;
+  --color-surface: #1a1a1a;
+  --color-border: #333333;
+  --color-muted: #888888;
+}
+
+[data-theme="solana"] {
+  --color-bg: #1a0d2e;
+  --color-fg: #ffffff;
+  --color-accent: #9945ff;
+  --color-surface: #2a1a3e;
+  --color-border: #3a2a4e;
+  --color-muted: #8a7a9a;
+}
+
+[data-theme="base"] {
+  --color-bg: #0f1419;
+  --color-fg: #ffffff;
+  --color-accent: #0052ff;
+  --color-surface: #1f2937;
+  --color-border: #374151;
+  --color-muted: #9ca3af;
+}
+
+[data-theme="coinbase"] {
+  --color-bg: #0a0e27;
+  --color-fg: #ffffff;
+  --color-accent: #0052ff;
+  --color-surface: #1a1f3a;
+  --color-border: #2a2f4a;
+  --color-muted: #8a8faa;
+}
+
+@layer base {
+  * {
+    @apply border-gray-200;
+  }
+  
+  body {
+    @apply bg-bg text-fg;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-surface bg-opacity-80 backdrop-blur-sm border border-border rounded-lg;
+  }
+  
+  .btn-primary {
+    @apply bg-accent text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition-all duration-200 shadow-lg hover:shadow-xl;
+  }
+  
+  .btn-secondary {
+    @apply bg-surface text-fg px-6 py-3 rounded-lg font-medium hover:bg-opacity-80 transition-all duration-200 border border-border;
+  }
+  
+  .metric-card {
+    @apply glass-card p-4 hover:bg-opacity-15 transition-all duration-200;
+  }
+  
+  .draw-card {
+    @apply glass-card p-6 hover:bg-opacity-90 transition-all duration-200 cursor-pointer;
+  }
+  
+  .voting-card {
+    @apply glass-card p-4 hover:bg-opacity-90 transition-all duration-200;
+  }
+}
